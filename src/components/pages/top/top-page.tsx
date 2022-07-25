@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
+import { Button } from "../../ui/button";
+import { New_YorkHT, New_YorkHTAndLT, New_YorkLT, TokyoHT, TokyoHTAndLT, TokyoLT } from "../data/area-url";
 
 export const TopPage = () => {
   const [area, setArea] = useState(false);
@@ -34,37 +36,33 @@ export const TopPage = () => {
     );
   };
 
-  const onChangeArea = (v: boolean) => {
-    const Tokyo =
-      "https://api.open-meteo.com/v1/forecast?latitude=35.6785&longitude=139.6823&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo";
-    const New_York =
-      "https://api.open-meteo.com/v1/forecast?latitude=40.71&longitude=-74.01&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FNew_York";
-
-    const area = v ? Tokyo : New_York;
-
-    fetch(area)
+  const onChangeArea = (url: string) => {
+    fetch(url)
       .then((data) => data.json())
       .then((json) => drawChart(json));
   };
 
-  const handleChangeArea = (v: boolean) => {
-    setArea(v);
-    onChangeArea(v);
-  };
+  // const handleChangeArea = (v: boolean) => {
+  //   setArea(v);
+  //   onChangeArea(v);
+  // };
 
   useEffect(() => {
-    onChangeArea(!area);
+    onChangeArea(New_YorkHTAndLT);
   }, []);
 
   return (
     <div>
-      <div id="App">{area ? "東京の天気" : "ニューヨークの天気"}</div>
+      <div id="App">{"気温"}</div>
       <div id="chartReport">
         <canvas id="myChart"></canvas>
       </div>
-      <button type="button" onClick={() => handleChangeArea(!area)} id="btn">
-        グラフを更新
-      </button>
+      <Button label="ニューヨーク最高気温＆最低気温" onClick={() => onChangeArea(New_YorkHTAndLT)} />
+      <Button label="ニューヨーク最高気温" onClick={() => onChangeArea(New_YorkHT)} />
+      <Button label="ニューヨーク最低気温" onClick={() => onChangeArea(New_YorkLT)} />
+      <Button label="東京最高気温＆最低気温" onClick={() => onChangeArea(TokyoHTAndLT)} />
+      <Button label="東京最高気温" onClick={() => onChangeArea(TokyoHT)} />
+      <Button label="東京最低気温" onClick={() => onChangeArea(TokyoLT)} />
     </div>
   );
 };
