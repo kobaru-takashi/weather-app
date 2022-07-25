@@ -40,6 +40,22 @@ export const Input = React.forwardRef(
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
     return (
+      type === 'checkbox' || type === 'radio' || type === 'checkBox' ?
+      <input
+        {...defaultProps}
+        type={type}
+        placeholder={placeholder}
+        maxLength={maxLength}
+        size={maxLength}
+        disabled={disabled && (!errorMessages.length && asyncDisabled)}
+        ref={ref}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          if (props.onChange) {
+            props.onChange(e);
+          }
+        }}
+      />
+      :
       <input
         {...defaultProps}
         type={type}

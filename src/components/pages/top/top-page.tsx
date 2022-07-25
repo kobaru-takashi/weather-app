@@ -24,8 +24,10 @@ export const TopPage = () => {
   const [precipitationChart, setPrecipitationChart] = useState<Chart | null>(null);
   const [sensoryTemperatureChart, setSensoryTemperatureChart] = useState<Chart | null>(null);
   const [temperatureInputChart, setTemperatureInputChart] = useState<Chart | null>(null);
+  const [temperatureRadioChart, setTemperatureRadioChart] = useState<Chart | null>(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [isTemperature, setIsTemperature] = useState(true);
 
   const changeStartDate = useCallback((v: string) => {
     setStartDate(v);
@@ -236,6 +238,35 @@ export const TopPage = () => {
     );
   };
 
+  const drawChartTemperatureRadio = (json: any) => {
+    const myData = {
+      labels: json.daily.time,
+      datasets: [
+        {
+          label: "最高気温",
+          data: json.daily.temperature_2m_max,
+          borderColor: "rgb(192, 75, 75)",
+        },
+        {
+          label: "最低気温",
+          data: json.daily.temperature_2m_min,
+          borderColor: "rgb(75, 75, 192)",
+        },
+      ],
+    };
+    const table = "temperatureRadio";
+
+    if (temperatureRadioChart) {
+      temperatureRadioChart.destroy();
+    }
+    setTemperatureRadioChart(
+      new Chart(table, {
+        type: "line",
+        data: myData,
+      })
+    );
+  };
+
   const onChangeJsonData = (url: string, callback: (jsonData: string) => void) => {
     fetch(url)
       .then((data) => data.json())
@@ -253,6 +284,7 @@ export const TopPage = () => {
     onChangeJsonData(TokyoHWVAndHG, drawChartWindVelocity);
     onChangeJsonData(New_YorkP, drawChartPrecipitation);
     onChangeJsonData(TokyoHST, drawChartSensoryTemperatureH);
+    onChangeJsonData(TokyoHT, drawChartTemperatureRadio);
   }, []);
 
   return (
@@ -328,8 +360,36 @@ export const TopPage = () => {
         <canvas id="temperatureInput"></canvas>
       </div>
       <Button label="最高体感気温" onClick={() => onChangeTemperatureInput(startDate, endDate)} />
-      <Input placeholder="開始日" maxLength={2} onChange={(e) => changeStartDate(e.target.value)}/>
-      <Input placeholder="終了日" maxLength={2} onChange={(e) => changeEndDate(e.target.value)}/>
+      <Input placeholder="開始日 01～31" maxLength={2} onChange={(e) => changeStartDate(e.target.value)}/>
+      <Input placeholder="終了日 01～31" maxLength={2} onChange={(e) => changeEndDate(e.target.value)}/>
+
+
+      <div>最高気温＆最低気温</div>
+      <div id="chartReport">
+        <canvas id="temperatureRadio"></canvas>
+      </div>
+      <Input
+        id="HT"
+        type="radio"
+        name="temperature"
+        onChange={() => {
+          setIsTemperature(!isTemperature);
+          onChangeJsonData(TokyoHT, drawChartTemperatureRadio);
+        }}
+        checked={isTemperature}
+      />
+      <label htmlFor="HT">最高気温</label>
+      <Input
+        id="LT"
+        type="radio"
+        name="temperature"
+        onChange={() => {
+          setIsTemperature(!isTemperature);
+          onChangeJsonData(TokyoLT, drawChartTemperatureRadio);
+        }}
+        checked={!isTemperature}
+      />
+      <label htmlFor="LT">最低気温</label>
     </div>
   );
 };
