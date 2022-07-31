@@ -1,68 +1,41 @@
 import React, { useState, useCallback, useEffect } from "react";
-import Chart from "chart.js/auto";
+import { useHistory } from "react-router-dom";
 import { Button } from "../../ui/button";
-import { Input } from "../../ui/input";
-import { Temperature } from "../graph/temperature";
-import { WindVelocity } from "../graph/wind-velocity";
-import { Precipitation } from "../graph/precipitation";
-import { SensoryTemperature } from "../graph/sensory-temperature";
-import { HighestTemperature } from "../graph/highest-temperature";
-import { HighLowTemperature } from "../graph/high-low-temperature";
 
 export const TopPage = () => {
-  // const [startDate, setStartDate] = useState("");
-  // const [endDate, setEndDate] = useState("");
-  // const [isTemperature, setIsTemperature] = useState(true);
+  const history = useHistory();
 
-  // const drawChart = (
-  //   labels: any,
-  //   label1: string,
-  //   data1: any,
-  //   label2: string,
-  //   data2: any,
-  //   table: string,
-  //   chart: Chart | null,
-  //   chartCallback: React.Dispatch<React.SetStateAction<Chart | null>>
-  // ) => {
-  //   const myData = {
-  //     labels: labels,
-  //     datasets: [
-  //       {
-  //         label: label1,
-  //         data: data1,
-  //         borderColor: "rgb(192, 75, 75)",
-  //       },
-  //       {
-  //         label: label2,
-  //         data: data2,
-  //         borderColor: "rgb(75, 75, 192)",
-  //       },
-  //     ],
-  //   };
-
-  //   if (chart) {
-  //     chart.destroy();
-  //   }
-
-  //   chartCallback(
-  //     new Chart(table, {
-  //       type: "line",
-  //       data: myData,
-  //     })
-  //   );
-  // };
-
-  useEffect(() => {
+  const changeTopPage = useCallback(() => {
+    history.push("/");
+  }, []);
+  const changeTemperature = useCallback(() => {
+    history.push("/Temperature");
+  }, []);
+  const changeWindVelocity = useCallback(() => {
+    history.push("/WindVelocity");
+  }, []);
+  const changePrecipitation = useCallback(() => {
+    history.push("/Precipitation");
+  }, []);
+  const changeSensoryTemperature = useCallback(() => {
+    history.push("/SensoryTemperature");
+  }, []);
+  const changeHighestTemperature = useCallback(() => {
+    history.push("/HighestTemperature");
+  }, []);
+  const changeHighLowTemperature = useCallback(() => {
+    history.push("/HighLowTemperature");
   }, []);
 
   return (
     <div>
-      <Temperature/>
-      <WindVelocity/>
-      <Precipitation/>
-      <SensoryTemperature/>
-      <HighestTemperature/>
-      <HighLowTemperature/>
+      <Button label="トップページ" onClick={changeTopPage}/>
+      <Button label="気温グラフ" onClick={changeTemperature}/>
+      <Button label="気温グラフ" onClick={changeWindVelocity}/>
+      <Button label="気温グラフ" onClick={changePrecipitation}/>
+      <Button label="気温グラフ" onClick={changeSensoryTemperature}/>
+      <Button label="気温グラフ" onClick={changeHighestTemperature}/>
+      <Button label="気温グラフ" onClick={changeHighLowTemperature}/>
     </div>
   );
 };
