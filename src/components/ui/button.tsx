@@ -36,6 +36,7 @@ export const Button = React.forwardRef((props: ButtonProps, ref: React.LegacyRef
         }
       }}
       ref={ref}
+      disabled={disabled}
     >
       {!!icon && <span className="button_icon">{icon}</span>}
       {label}
