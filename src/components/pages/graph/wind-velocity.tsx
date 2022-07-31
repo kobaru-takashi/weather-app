@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import { TokyoHG, TokyoHWV, TokyoHWVAndHG } from "../../../data/area-url";
+import { AREA_URL } from "../../../data/area-url";
 import { Sidebar } from "../sidebar/sidebar";
 
 export const WindVelocity = () => {
@@ -63,7 +63,7 @@ export const WindVelocity = () => {
   }, [disableIndex]);
 
   useEffect(() => {
-    onChangeJsonData(TokyoHWVAndHG, drawChartWindVelocity);
+    onChangeJsonData(AREA_URL.TokyoHWVAndHG, drawChartWindVelocity);
   }, []);
 
   return (
@@ -76,7 +76,7 @@ export const WindVelocity = () => {
       <Button
         label="東京最高風速＆突風"
         onClick={() => {
-          onChangeJsonData(TokyoHWVAndHG, drawChartWindVelocity);
+          onChangeJsonData(AREA_URL.TokyoHWVAndHG, drawChartWindVelocity);
           changeIndex(0);
         }}
         disabled={disabledList[0]}
@@ -84,7 +84,7 @@ export const WindVelocity = () => {
       <Button
         label="東京最高風速"
         onClick={() => {
-          onChangeJsonData(TokyoHWV, drawChartWindVelocity);
+          onChangeJsonData(AREA_URL.TokyoHWV, drawChartWindVelocity);
           changeIndex(1);
         }}
         disabled={disabledList[1]}
@@ -92,7 +92,7 @@ export const WindVelocity = () => {
       <Button
         label="東京最低突風"
         onClick={() => {
-          onChangeJsonData(TokyoHG, drawChartWindVelocity);
+          onChangeJsonData(AREA_URL.TokyoHG, drawChartWindVelocity);
           changeIndex(2);
         }}
         disabled={disabledList[2]}

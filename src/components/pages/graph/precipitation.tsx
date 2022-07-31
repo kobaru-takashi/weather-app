@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import { New_YorkP, TokyoP } from "../../../data/area-url";
+import { AREA_URL } from "../../../data/area-url";
 import { Sidebar } from "../sidebar/sidebar";
 
 export const Precipitation = () => {
@@ -51,7 +51,7 @@ export const Precipitation = () => {
   },[disableIndex]);
 
   useEffect(() => {
-    onChangeJsonData(New_YorkP, drawChartPrecipitation);
+    onChangeJsonData(AREA_URL.New_YorkP, drawChartPrecipitation);
   }, []);
 
   return (
@@ -63,14 +63,14 @@ export const Precipitation = () => {
       </div>
       <Button
         label="ニューヨーク降水量"
-        onClick={() => {onChangeJsonData(New_YorkP, drawChartPrecipitation);
+        onClick={() => {onChangeJsonData(AREA_URL.New_YorkP, drawChartPrecipitation);
           changeIndex(0);
         }}
         disabled={disabledList[0]}
       />
       <Button
         label="東京降水量"
-        onClick={() => {onChangeJsonData(TokyoP, drawChartPrecipitation);
+        onClick={() => {onChangeJsonData(AREA_URL.TokyoP, drawChartPrecipitation);
           changeIndex(1);
         }}
         disabled={disabledList[1]}
