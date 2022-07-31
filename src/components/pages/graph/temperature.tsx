@@ -1,14 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import {
-  New_YorkHT,
-  New_YorkHTAndLT,
-  New_YorkLT,
-  TokyoHT,
-  TokyoHTAndLT,
-  TokyoLT,
-} from "../../../data/area-url";
+import { AREA_URL } from "../../../data/area-url";
 import { Sidebar } from "../sidebar/sidebar";
 
 export const Temperature = () => {
@@ -70,7 +63,7 @@ export const Temperature = () => {
   },[disableIndex]);
 
   useEffect(() => {
-    onChangeJsonData(New_YorkHTAndLT, drawChartTemperature);
+    onChangeJsonData(AREA_URL.New_YorkHTAndLT, drawChartTemperature);
   }, []);
 
   return (
@@ -83,7 +76,7 @@ export const Temperature = () => {
       <Button
         label="ニューヨーク最高気温＆最低気温"
         onClick={()=>{
-          onChangeJsonData(New_YorkHTAndLT, drawChartTemperature);
+          onChangeJsonData(AREA_URL.New_YorkHTAndLT, drawChartTemperature);
           changeIndex(0);
         }}
         disabled={disabledList[0]}
@@ -91,7 +84,7 @@ export const Temperature = () => {
       <Button
         label="ニューヨーク最高気温"
         onClick={()=>{
-          onChangeJsonData(New_YorkHT, drawChartTemperature);
+          onChangeJsonData(AREA_URL.New_YorkHT, drawChartTemperature);
           changeIndex(1);
         }}
         disabled={disabledList[1]}
@@ -99,7 +92,7 @@ export const Temperature = () => {
       <Button
         label="ニューヨーク最低気温"
         onClick={()=>{
-          onChangeJsonData(New_YorkLT, drawChartTemperature);
+          onChangeJsonData(AREA_URL.New_YorkLT, drawChartTemperature);
           changeIndex(2);
         }}
         disabled={disabledList[2]}
@@ -107,7 +100,7 @@ export const Temperature = () => {
       <Button
         label="東京最高気温＆最低気温"
         onClick={()=>{
-          onChangeJsonData(TokyoHTAndLT, drawChartTemperature);
+          onChangeJsonData(AREA_URL.TokyoHTAndLT, drawChartTemperature);
           changeIndex(3);
         }}
         disabled={disabledList[3]}
@@ -115,7 +108,7 @@ export const Temperature = () => {
       <Button
         label="東京最高気温"
         onClick={()=>{
-          onChangeJsonData(TokyoHT, drawChartTemperature);
+          onChangeJsonData(AREA_URL.TokyoHT, drawChartTemperature);
           changeIndex(4);
         }}
         disabled={disabledList[4]}
@@ -123,7 +116,7 @@ export const Temperature = () => {
       <Button
         label="東京最低気温"
         onClick={()=>{
-          onChangeJsonData(TokyoLT, drawChartTemperature);
+          onChangeJsonData(AREA_URL.TokyoLT, drawChartTemperature);
           changeIndex(5);
         }}
         disabled={disabledList[5]}

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import { TokyoHST, TokyoLST } from "../../../data/area-url";
+import { AREA_URL } from "../../../data/area-url";
 import { Sidebar } from "../sidebar/sidebar";
 
 export const SensoryTemperature = () => {
@@ -93,7 +93,7 @@ export const SensoryTemperature = () => {
   }, [disableIndex]);
 
   useEffect(() => {
-    onChangeJsonData(TokyoHST, drawChartSensoryTemperatureH);
+    onChangeJsonData(AREA_URL.TokyoHST, drawChartSensoryTemperatureH);
   }, []);
 
   return (
@@ -106,7 +106,7 @@ export const SensoryTemperature = () => {
       <Button
         label="最高体感気温"
         onClick={() => {
-          onChangeJsonData(TokyoHST, drawChartSensoryTemperatureH);
+          onChangeJsonData(AREA_URL.TokyoHST, drawChartSensoryTemperatureH);
           changeIndex(0);
         }}
         disabled={disabledList[0]}
@@ -114,7 +114,7 @@ export const SensoryTemperature = () => {
       <Button
         label="最低体感気温"
         onClick={() => {
-          onChangeJsonData(TokyoLST, drawChartSensoryTemperatureL);
+          onChangeJsonData(AREA_URL.TokyoLST, drawChartSensoryTemperatureL);
           changeIndex(1);
         }}
         disabled={disabledList[1]}

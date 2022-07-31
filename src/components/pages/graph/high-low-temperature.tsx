@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import { TokyoHT, TokyoLT } from "../../../data/area-url";
+import { AREA_URL } from "../../../data/area-url";
 import { Input } from "../../ui/input";
 import { Sidebar } from "../sidebar/sidebar";
 
@@ -45,7 +45,7 @@ export const HighLowTemperature = () => {
   };
 
   useEffect(() => {
-    onChangeJsonData(TokyoHT, drawChartTemperatureRadio);
+    onChangeJsonData(AREA_URL.TokyoHT, drawChartTemperatureRadio);
   }, []);
 
   return (
@@ -61,7 +61,7 @@ export const HighLowTemperature = () => {
         name="temperature"
         onChange={() => {
           setIsTemperature(!isTemperature);
-          onChangeJsonData(TokyoHT, drawChartTemperatureRadio);
+          onChangeJsonData(AREA_URL.TokyoHT, drawChartTemperatureRadio);
         }}
         checked={isTemperature}
       />
@@ -72,7 +72,7 @@ export const HighLowTemperature = () => {
         name="temperature"
         onChange={() => {
           setIsTemperature(!isTemperature);
-          onChangeJsonData(TokyoLT, drawChartTemperatureRadio);
+          onChangeJsonData(AREA_URL.TokyoLT, drawChartTemperatureRadio);
         }}
         checked={!isTemperature}
       />
