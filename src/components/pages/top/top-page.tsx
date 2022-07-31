@@ -290,7 +290,7 @@ export const TopPage = () => {
   return (
     <div>
       <div>気温</div>
-      <div id="chartReport">
+      <div id="chartReport1" style={{width:600, height:300}}>
         <canvas id="temperature"></canvas>
       </div>
       <Button
@@ -319,7 +319,7 @@ export const TopPage = () => {
       />
 
       <div>風速</div>
-      <div id="chartReport">
+      <div id="chartReport2" style={{width:600, height:300}}>
         <canvas id="windVelocity"></canvas>
       </div>
       <Button
@@ -336,7 +336,7 @@ export const TopPage = () => {
       />
 
       <div>降水量の合計</div>
-      <div id="chartReport">
+      <div id="chartReport3" style={{width:600, height:300}}>
         <canvas id="precipitation"></canvas>
       </div>
       <Button
@@ -349,14 +349,14 @@ export const TopPage = () => {
       />
 
       <div>気温と体感気温比較</div>
-      <div id="chartReport">
+      <div id="chartReport4" style={{width:600, height:300}}>
         <canvas id="sensoryTemperature"></canvas>
       </div>
       <Button label="最高体感気温" onClick={() => onChangeJsonData(TokyoHST, drawChartSensoryTemperatureH)} />
       <Button label="最低体感気温" onClick={() => onChangeJsonData(TokyoLST, drawChartSensoryTemperatureL)} />
 
       <div>最高気温</div>
-      <div id="chartReport">
+      <div id="chartReport5" style={{width:600, height:300}}>
         <canvas id="temperatureInput"></canvas>
       </div>
       <Button label="最高体感気温" onClick={() => onChangeTemperatureInput(startDate, endDate)} />
@@ -365,7 +365,7 @@ export const TopPage = () => {
 
 
       <div>最高気温＆最低気温</div>
-      <div id="chartReport">
+      <div id="chartReport6" style={{width:600, height:300}}>
         <canvas id="temperatureRadio"></canvas>
       </div>
       <Input
