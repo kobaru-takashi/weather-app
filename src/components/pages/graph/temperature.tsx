@@ -8,11 +8,20 @@ import {
   TokyoHT,
   TokyoHTAndLT,
   TokyoLT,
-} from "../data/area-url";
+} from "../../../data/area-url";
 import { Sidebar } from "../sidebar/sidebar";
 
 export const Temperature = () => {
   const [temperatureChart, setTemperatureChart] = useState<Chart | null>(null);
+  const [disabledList, setDisabledList] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [disableIndex, setDisabledIndex] = useState(0);
 
   const drawChartTemperature = (json: any) => {
     const myData = {
@@ -52,6 +61,14 @@ export const Temperature = () => {
       .then((json) => callback(json));
   };
 
+  const changeIndex = useCallback((v: number) => {
+    setDisabledIndex(v);
+  },[disableIndex, disabledList]);
+
+  useEffect(() => {
+    setDisabledList(disabledList.map((disabled, i) => disabled = i === disableIndex ? true : false));
+  },[disableIndex]);
+
   useEffect(() => {
     onChangeJsonData(New_YorkHTAndLT, drawChartTemperature);
   }, []);
@@ -65,27 +82,51 @@ export const Temperature = () => {
       </div>
       <Button
         label="ニューヨーク最高気温＆最低気温"
-        onClick={() => onChangeJsonData(New_YorkHTAndLT, drawChartTemperature)}
+        onClick={()=>{
+          onChangeJsonData(New_YorkHTAndLT, drawChartTemperature);
+          changeIndex(0);
+        }}
+        disabled={disabledList[0]}
       />
       <Button
         label="ニューヨーク最高気温"
-        onClick={() => onChangeJsonData(New_YorkHT, drawChartTemperature)}
+        onClick={()=>{
+          onChangeJsonData(New_YorkHT, drawChartTemperature);
+          changeIndex(1);
+        }}
+        disabled={disabledList[1]}
       />
       <Button
         label="ニューヨーク最低気温"
-        onClick={() => onChangeJsonData(New_YorkLT, drawChartTemperature)}
+        onClick={()=>{
+          onChangeJsonData(New_YorkLT, drawChartTemperature);
+          changeIndex(2);
+        }}
+        disabled={disabledList[2]}
       />
       <Button
         label="東京最高気温＆最低気温"
-        onClick={() => onChangeJsonData(TokyoHTAndLT, drawChartTemperature)}
+        onClick={()=>{
+          onChangeJsonData(TokyoHTAndLT, drawChartTemperature);
+          changeIndex(3);
+        }}
+        disabled={disabledList[3]}
       />
       <Button
         label="東京最高気温"
-        onClick={() => onChangeJsonData(TokyoHT, drawChartTemperature)}
+        onClick={()=>{
+          onChangeJsonData(TokyoHT, drawChartTemperature);
+          changeIndex(4);
+        }}
+        disabled={disabledList[4]}
       />
       <Button
         label="東京最低気温"
-        onClick={() => onChangeJsonData(TokyoLT, drawChartTemperature)}
+        onClick={()=>{
+          onChangeJsonData(TokyoLT, drawChartTemperature);
+          changeIndex(5);
+        }}
+        disabled={disabledList[5]}
       />
     </>
   );

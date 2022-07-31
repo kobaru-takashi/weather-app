@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import { TokyoHT, TokyoLT } from "../data/area-url";
+import { TokyoHT, TokyoLT } from "../../../data/area-url";
 import { Input } from "../../ui/input";
 import { Sidebar } from "../sidebar/sidebar";
 

@@ -1,10 +1,21 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "../../ui/button";
 
 export const Sidebar = () => {
-  const history = useHistory();
+  const [disabledList, setDisabledList] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [disableIndex, setDisabledIndex] = useState(0);
+  const [isDisable, setIsDisabled] = useState(false);
 
+  const history = useHistory();
   const changeTopPage = useCallback(() => {
     history.push("/");
   }, []);
@@ -27,30 +38,92 @@ export const Sidebar = () => {
     history.push("/HighLowTemperature");
   }, []);
 
+  const changeIndex = useCallback((v: number) => {
+    setDisabledIndex(v);
+  },[disableIndex, disabledList]);
+
+  useEffect(() => {
+    setDisabledList((prev) => {
+      return prev.map((disabled, i) => {
+        return disabled = i === disableIndex ? true : false
+      });
+    });
+    setDisabledList(disabledList.map((disabled, i) => disabled = i === disableIndex ? true : false));
+  },[disableIndex]);
+
   return (
     <>
       <div className="side_bar">
         <ul>
           <li>
-            <Button label="トップページ" onClick={changeTopPage} />
+            <Button
+              label="トップページ"
+              onClick={() => {
+                changeTopPage();
+                changeIndex(0);
+              }}
+              disabled={disabledList[0]}
+            />
           </li>
           <li>
-            <Button label="気温グラフ" onClick={changeTemperature} />
+            <Button
+              label="気温グラフ"
+              onClick={() => {
+                changeTemperature();
+                changeIndex(1);
+              }}
+              disabled={disabledList[1]}
+            />
           </li>
           <li>
-            <Button label="風速グラフ" onClick={changeWindVelocity} />
+            <Button
+              label="風速グラフ"
+              onClick={() => {
+                changeWindVelocity();
+                changeIndex(2);
+              }}
+              disabled={disabledList[2]}
+            />
           </li>
           <li>
-            <Button label="降水量グラフ" onClick={changePrecipitation} />
+            <Button
+              label="降水量グラフ"
+              onClick={() => {
+                changeIndex(3);
+                changePrecipitation();
+              }}
+              disabled={disabledList[3]}
+            />
           </li>
           <li>
-            <Button label="体感気温グラフ" onClick={changeSensoryTemperature} />
+            <Button
+              label="体感気温グラフ"
+              onClick={() => {
+                changeSensoryTemperature();
+                changeIndex(4);
+              }}
+              disabled={disabledList[4]}
+            />
           </li>
           <li>
-            <Button label="最高気温グラフ" onClick={changeHighestTemperature} />
+            <Button
+              label="最高気温グラフ"
+              onClick={() => {
+                changeHighestTemperature();
+                changeIndex(5);
+              }}
+              disabled={disabledList[5]}
+            />
           </li>
           <li>
-            <Button label="最高気温＆最低気温グラフ" onClick={changeHighLowTemperature} />
+            <Button
+              label="最高気温＆最低気温グラフ"
+              onClick={() => {
+                changeHighLowTemperature();
+                changeIndex(6);
+              }}
+              disabled={disabledList[6]}
+            />
           </li>
         </ul>
       </div>
