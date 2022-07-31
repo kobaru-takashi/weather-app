@@ -9,6 +9,7 @@ import {
   TokyoHTAndLT,
   TokyoLT,
 } from "../data/area-url";
+import { Sidebar } from "../sidebar/sidebar";
 
 export const Temperature = () => {
   const [temperatureChart, setTemperatureChart] = useState<Chart | null>(null);
@@ -57,7 +58,8 @@ export const Temperature = () => {
 
   return (
     <>
-      <div>気温</div>
+      <Sidebar/>
+      <h1> --- 気温 ---</h1>
       <div id="chartTemperature" style={{ width: 600, height: 300 }}>
         <canvas id="temperature"></canvas>
       </div>

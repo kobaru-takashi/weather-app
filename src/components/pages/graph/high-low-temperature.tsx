@@ -3,6 +3,7 @@ import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
 import { TokyoHT, TokyoLT } from "../data/area-url";
 import { Input } from "../../ui/input";
+import { Sidebar } from "../sidebar/sidebar";
 
 export const HighLowTemperature = () => {
   const [temperatureRadioChart, setTemperatureRadioChart] = useState<Chart | null>(null);
@@ -49,7 +50,8 @@ export const HighLowTemperature = () => {
 
   return (
     <>
-      <div>最高気温＆最低気温</div>
+      <Sidebar/>
+      <h1> --- 最高気温 ＆ 最低気温 --- </h1>
       <div id="chartHighLowTemperature" style={{width:600, height:300}}>
         <canvas id="temperatureRadio"></canvas>
       </div>

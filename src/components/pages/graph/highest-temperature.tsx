@@ -3,6 +3,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
+import { Sidebar } from "../sidebar/sidebar";
 
 export const HighestTemperature = () => {
   const [temperatureInputChart, setTemperatureInputChart] = useState<Chart | null>(null);
@@ -52,7 +53,8 @@ export const HighestTemperature = () => {
 
   return (
     <>
-      <div>最高気温</div>
+      <Sidebar/>
+      <h1> --- 最高気温 --- </h1>
       <div id="chartHighestTemperature" style={{width:600, height:300}}>
         <canvas id="temperatureInput"></canvas>
       </div>

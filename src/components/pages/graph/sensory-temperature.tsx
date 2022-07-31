@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
 import { TokyoHST, TokyoLST } from "../data/area-url";
+import { Sidebar } from "../sidebar/sidebar";
 
 export const SensoryTemperature = () => {
   const [sensoryTemperatureChart, setSensoryTemperatureChart] = useState<Chart | null>(null);
@@ -79,7 +80,8 @@ export const SensoryTemperature = () => {
 
   return (
     <>
-      <div>気温と体感気温比較</div>
+      <Sidebar/>
+      <h1> --- 気温と体感気温比較 --- </h1>
       <div id="chartSensoryTemperature" style={{width:600, height:300}}>
         <canvas id="sensoryTemperature"></canvas>
       </div>

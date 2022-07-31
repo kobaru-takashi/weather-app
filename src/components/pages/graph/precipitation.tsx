@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
 import { New_YorkP, TokyoP } from "../data/area-url";
+import { Sidebar } from "../sidebar/sidebar";
 
 export const Precipitation = () => {
   const [precipitationChart, setPrecipitationChart] = useState<Chart | null>(null);
@@ -45,7 +46,8 @@ export const Precipitation = () => {
 
   return (
     <>
-      <div>降水量の合計</div>
+      <Sidebar/>
+      <h1> --- 降水量の合計 --- </h1>
       <div id="chartPrecipitation" style={{ width: 600, height: 300 }}>
         <canvas id="precipitation"></canvas>
       </div>

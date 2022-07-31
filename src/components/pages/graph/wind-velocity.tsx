@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
 import { TokyoHG, TokyoHWV, TokyoHWVAndHG } from "../data/area-url";
+import { Sidebar } from "../sidebar/sidebar";
 
 export const WindVelocity = () => {
   const [windVelocityChart, setWindVelocityChart] = useState<Chart | null>(null);
@@ -50,7 +51,8 @@ export const WindVelocity = () => {
 
   return (
     <>
-      <div>風速</div>
+      <Sidebar/>
+      <h1> --- 風速 --- </h1>
       <div id="chartWindVelocity" style={{ width: 600, height: 300 }}>
         <canvas id="windVelocity"></canvas>
       </div>
