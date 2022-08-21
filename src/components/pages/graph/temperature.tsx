@@ -1,13 +1,39 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import { JP_COORDINATES} from "../../../data/area-url";
+import { JP_COORDINATES } from "../../../data/area-url";
 import { Sidebar } from "../sidebar/sidebar";
+import {
+  ReactSelect,
+  SelectInfoData,
+} from "../../ui/react-select";
+import { MultiValue, SingleValue } from "react-select";
+import { LabeledForm } from "../../ui/labeled-form";
 
 export const Temperature = () => {
   const [temperatureChart, setTemperatureChart] = useState<Chart | null>(null);
-  const [disabledList, setDisabledList] = useState<boolean[]>(JP_COORDINATES.map((_) => false));
-  const [disableIndex, setDisabledIndex] = useState(0);
+  // const [disabledList, setDisabledList] = useState<boolean[]>(
+  //   JP_COORDINATES.map((_) => false)
+  // );
+  // // const [disableIndex, setDisabledIndex] = useState(0);
+
+  /* - 都道府県　リスト - */
+  const coordinatesList = useMemo<SelectInfoData[]>(() => {
+    return JP_COORDINATES.map((v, i) => ({ value: v.name, label: v.name }));
+  }, [JP_COORDINATES]);
+
+  /* 選択　都道府県 */
+  const [coordinatesListBody, setCoordinatesListBody] = useState<SingleValue<SelectInfoData> | undefined>(undefined);
+
+  // - 選択 -
+  const changeSelect = useCallback((v: any) => {
+      setCoordinatesListBody(v);
+
+      const coordinates = JP_COORDINATES.find((obj) => obj.name === v.value);
+      if (coordinates) {
+        onChangeJsonData(coordinates.latitude, coordinates.longitude);
+      }
+  }, [temperatureChart]);
 
   const drawChartTemperature = (json: any) => {
     const myData = {
@@ -45,40 +71,31 @@ export const Temperature = () => {
       .then((json) => drawChartTemperature(json));
   };
 
-  const changeIndex = useCallback((v: number) => {
-    setDisabledIndex(v);
-  },[disableIndex, disabledList]);
-
-  useEffect(() => {
-    setDisabledList(disabledList.map((disabled, i) => disabled = i === disableIndex ? true : false));
-  },[disableIndex]);
-
-  useEffect(() => {
-    onChangeJsonData(JP_COORDINATES[0].latitude, JP_COORDINATES[0].longitude);
-  }, []);
+  // useEffect(() => {
+  //   setDisabledList(
+  //     disabledList.map(
+  //       (disabled, i) => (disabled = i === disableIndex ? true : false)
+  //     )
+  //   );
+  // }, [disableIndex]);
 
   return (
     <>
-      <Sidebar/>
+      <Sidebar />
       <h1> --- 気温 ---</h1>
       <div id="chartTemperature" style={{ width: 600, height: 300 }}>
         <canvas id="temperature"></canvas>
       </div>
-      {
-        JP_COORDINATES.map((v,i) => {
-          return(
-            <Button
-            key={`JP_COORDINATES_${i}`}
-            label={`【${v.name}】　最高気温＆最低気温`}
-            onClick={()=>{
-              onChangeJsonData(v.latitude, v.longitude);
-              changeIndex(i);
-            }}
-            disabled={disabledList[i]}
+      <LabeledForm
+        label="最高気温＆最低気温"
+        formEle={
+          <ReactSelect
+            list={coordinatesList}
+            select={coordinatesListBody}
+            handleChange={changeSelect}
           />
-          );
-        })
-      }
+        }
+      />
     </>
   );
 };
