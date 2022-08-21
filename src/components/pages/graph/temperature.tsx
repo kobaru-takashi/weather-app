@@ -1,20 +1,35 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import { AREA_URL } from "../../../data/area-url";
+import { JP_COORDINATES } from "../../../data/area-url";
 import { Sidebar } from "../sidebar/sidebar";
+import {
+  ReactSelect,
+  SelectInfoData,
+} from "../../ui/react-select";
+import { MultiValue, SingleValue } from "react-select";
+import { LabeledForm } from "../../ui/labeled-form";
 
 export const Temperature = () => {
   const [temperatureChart, setTemperatureChart] = useState<Chart | null>(null);
-  const [disabledList, setDisabledList] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const [disableIndex, setDisabledIndex] = useState(0);
+
+  /* - 都道府県　リスト - */
+  const coordinatesList = useMemo<SelectInfoData[]>(() => {
+    return JP_COORDINATES.map((v, i) => ({ value: v.name, label: v.name }));
+  }, [JP_COORDINATES]);
+
+  /* 選択　都道府県 */
+  const [coordinatesListBody, setCoordinatesListBody] = useState<SingleValue<SelectInfoData> | undefined>(undefined);
+
+  // - 選択変更 -
+  const changeSelect = useCallback((v: any) => {
+    setCoordinatesListBody(v);
+
+    const coordinates = JP_COORDINATES.find((obj) => obj.name === v.value);
+    if (coordinates) {
+      onChangeJsonData(coordinates.latitude, coordinates.longitude);
+    }
+  }, [temperatureChart]);
 
   const drawChartTemperature = (json: any) => {
     const myData = {
@@ -45,81 +60,29 @@ export const Temperature = () => {
     );
   };
 
-  const onChangeJsonData = (
-    url: string,
-    callback: (jsonData: string) => void
-  ) => {
+  const onChangeJsonData = (latitude: number, longitude: number) => {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo`;
     fetch(url)
       .then((data) => data.json())
-      .then((json) => callback(json));
+      .then((json) => drawChartTemperature(json));
   };
-
-  const changeIndex = useCallback((v: number) => {
-    setDisabledIndex(v);
-  },[disableIndex, disabledList]);
-
-  useEffect(() => {
-    setDisabledList(disabledList.map((disabled, i) => disabled = i === disableIndex ? true : false));
-  },[disableIndex]);
-
-  useEffect(() => {
-    onChangeJsonData(AREA_URL.New_YorkHTAndLT, drawChartTemperature);
-  }, []);
 
   return (
     <>
-      <Sidebar/>
+      <Sidebar />
       <h1> --- 気温 ---</h1>
       <div id="chartTemperature" style={{ width: 600, height: 300 }}>
         <canvas id="temperature"></canvas>
       </div>
-      <Button
-        label="ニューヨーク最高気温＆最低気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.New_YorkHTAndLT, drawChartTemperature);
-          changeIndex(0);
-        }}
-        disabled={disabledList[0]}
-      />
-      <Button
-        label="ニューヨーク最高気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.New_YorkHT, drawChartTemperature);
-          changeIndex(1);
-        }}
-        disabled={disabledList[1]}
-      />
-      <Button
-        label="ニューヨーク最低気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.New_YorkLT, drawChartTemperature);
-          changeIndex(2);
-        }}
-        disabled={disabledList[2]}
-      />
-      <Button
-        label="東京最高気温＆最低気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.TokyoHTAndLT, drawChartTemperature);
-          changeIndex(3);
-        }}
-        disabled={disabledList[3]}
-      />
-      <Button
-        label="東京最高気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.TokyoHT, drawChartTemperature);
-          changeIndex(4);
-        }}
-        disabled={disabledList[4]}
-      />
-      <Button
-        label="東京最低気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.TokyoLT, drawChartTemperature);
-          changeIndex(5);
-        }}
-        disabled={disabledList[5]}
+      <LabeledForm
+        label="最高気温＆最低気温"
+        formEle={
+          <ReactSelect
+            list={coordinatesList}
+            select={coordinatesListBody}
+            handleChange={changeSelect}
+          />
+        }
       />
     </>
   );
