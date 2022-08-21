@@ -1,19 +1,12 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Button } from "../../ui/button";
-import { AREA_URL } from "../../../data/area-url";
+import { JP_COORDINATES} from "../../../data/area-url";
 import { Sidebar } from "../sidebar/sidebar";
 
 export const Temperature = () => {
   const [temperatureChart, setTemperatureChart] = useState<Chart | null>(null);
-  const [disabledList, setDisabledList] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [disabledList, setDisabledList] = useState<boolean[]>(JP_COORDINATES.map((_) => false));
   const [disableIndex, setDisabledIndex] = useState(0);
 
   const drawChartTemperature = (json: any) => {
@@ -45,13 +38,11 @@ export const Temperature = () => {
     );
   };
 
-  const onChangeJsonData = (
-    url: string,
-    callback: (jsonData: string) => void
-  ) => {
+  const onChangeJsonData = (latitude: number, longitude: number) => {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo`;
     fetch(url)
       .then((data) => data.json())
-      .then((json) => callback(json));
+      .then((json) => drawChartTemperature(json));
   };
 
   const changeIndex = useCallback((v: number) => {
@@ -63,7 +54,7 @@ export const Temperature = () => {
   },[disableIndex]);
 
   useEffect(() => {
-    onChangeJsonData(AREA_URL.New_YorkHTAndLT, drawChartTemperature);
+    onChangeJsonData(JP_COORDINATES[0].latitude, JP_COORDINATES[0].longitude);
   }, []);
 
   return (
@@ -73,54 +64,21 @@ export const Temperature = () => {
       <div id="chartTemperature" style={{ width: 600, height: 300 }}>
         <canvas id="temperature"></canvas>
       </div>
-      <Button
-        label="ニューヨーク最高気温＆最低気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.New_YorkHTAndLT, drawChartTemperature);
-          changeIndex(0);
-        }}
-        disabled={disabledList[0]}
-      />
-      <Button
-        label="ニューヨーク最高気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.New_YorkHT, drawChartTemperature);
-          changeIndex(1);
-        }}
-        disabled={disabledList[1]}
-      />
-      <Button
-        label="ニューヨーク最低気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.New_YorkLT, drawChartTemperature);
-          changeIndex(2);
-        }}
-        disabled={disabledList[2]}
-      />
-      <Button
-        label="東京最高気温＆最低気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.TokyoHTAndLT, drawChartTemperature);
-          changeIndex(3);
-        }}
-        disabled={disabledList[3]}
-      />
-      <Button
-        label="東京最高気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.TokyoHT, drawChartTemperature);
-          changeIndex(4);
-        }}
-        disabled={disabledList[4]}
-      />
-      <Button
-        label="東京最低気温"
-        onClick={()=>{
-          onChangeJsonData(AREA_URL.TokyoLT, drawChartTemperature);
-          changeIndex(5);
-        }}
-        disabled={disabledList[5]}
-      />
+      {
+        JP_COORDINATES.map((v,i) => {
+          return(
+            <Button
+            key={`JP_COORDINATES_${i}`}
+            label={`【${v.name}】　最高気温＆最低気温`}
+            onClick={()=>{
+              onChangeJsonData(v.latitude, v.longitude);
+              changeIndex(i);
+            }}
+            disabled={disabledList[i]}
+          />
+          );
+        })
+      }
     </>
   );
 };
