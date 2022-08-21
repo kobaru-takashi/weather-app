@@ -12,10 +12,6 @@ import { LabeledForm } from "../../ui/labeled-form";
 
 export const Temperature = () => {
   const [temperatureChart, setTemperatureChart] = useState<Chart | null>(null);
-  // const [disabledList, setDisabledList] = useState<boolean[]>(
-  //   JP_COORDINATES.map((_) => false)
-  // );
-  // // const [disableIndex, setDisabledIndex] = useState(0);
 
   /* - 都道府県　リスト - */
   const coordinatesList = useMemo<SelectInfoData[]>(() => {
@@ -25,14 +21,14 @@ export const Temperature = () => {
   /* 選択　都道府県 */
   const [coordinatesListBody, setCoordinatesListBody] = useState<SingleValue<SelectInfoData> | undefined>(undefined);
 
-  // - 選択 -
+  // - 選択変更 -
   const changeSelect = useCallback((v: any) => {
-      setCoordinatesListBody(v);
+    setCoordinatesListBody(v);
 
-      const coordinates = JP_COORDINATES.find((obj) => obj.name === v.value);
-      if (coordinates) {
-        onChangeJsonData(coordinates.latitude, coordinates.longitude);
-      }
+    const coordinates = JP_COORDINATES.find((obj) => obj.name === v.value);
+    if (coordinates) {
+      onChangeJsonData(coordinates.latitude, coordinates.longitude);
+    }
   }, [temperatureChart]);
 
   const drawChartTemperature = (json: any) => {
@@ -70,14 +66,6 @@ export const Temperature = () => {
       .then((data) => data.json())
       .then((json) => drawChartTemperature(json));
   };
-
-  // useEffect(() => {
-  //   setDisabledList(
-  //     disabledList.map(
-  //       (disabled, i) => (disabled = i === disableIndex ? true : false)
-  //     )
-  //   );
-  // }, [disableIndex]);
 
   return (
     <>
