@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "../../ui/button";
+import Paperbase from './Paperbase';
 
 export const Sidebar = () => {
   const [disabledList, setDisabledList] = useState([
@@ -127,6 +128,7 @@ export const Sidebar = () => {
           </li>
         </ul>
       </div>
+
     </>
   );
 };
